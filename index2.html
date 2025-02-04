@@ -2,7 +2,8 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Klíčové pro správné vykreslení na mobilech -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Výroba</title>
   <style>
     body {
@@ -145,25 +146,26 @@
       font-size: 14px;
       padding: 5px 10px;
     }
+
+    /* Media query pro menší displeje (např. iPhone) */
     @media (max-width: 480px) {
-    /* For smaller screens, like iPhone */
-    body {
-      font-size: 14px;
+      body {
+        font-size: 14px;
+      }
+      .container {
+        max-width: 95%;
+        margin: 60px auto 0 auto;
+        padding: 5px;
+      }
+      .button {
+        font-size: 14px;
+        padding: 8px 10px;
+      }
+      h1, h2 {
+        font-size: 18px;
+      }
     }
-    .container {
-      margin: 60px auto 0 auto;
-      padding: 5px;
-      max-width: 95%;
-    }
-    .button {
-      font-size: 14px;
-      padding: 8px 10px;
-    }
-    h1, h2 {
-      font-size: 18px;
-    }
-  }
-</style>
+  </style>
 </head>
 <body>
   <header>
@@ -220,10 +222,8 @@
 
       <p>Vybraný automat: <span id="orderAssignedMachineDisplay"></span></p>
 
-      <!-- Zobrazení uloženého automatu -->
       <div id="savedMachineDisplay"></div>
 
-      <!-- Souhrn postupu práce -->
       <div id="progressSummary"></div>
 
       <hr>
@@ -266,7 +266,7 @@
 
     <!-- 5. Přidat zakázku -->
     <div id="orderAddView" class="view">
-      <button class="button" onclick="showMainView()">← Zpět na seznam</button>
+      <button class="back-button" onclick="showMainView()">← Zpět na seznam</button>
       <h2>Přidat zakázku</h2>
       <p>Firma: <input type="text" id="addCustomer"></p>
       <p>Výrobek: <input type="text" id="addProduct"></p>
@@ -411,9 +411,6 @@
   </div>
 
   <script>
-    // Vytvoříme v "currentOrder" strukturu, kde se bude ukládat popisek k automatu, abychom ho zachovali.
-    // Zrušíme proměnnou "savedMachine" a místo toho vše ukládáme do currentOrder.machineDetail.
-
     let orders = [
       {
         id: 1,
@@ -579,14 +576,9 @@
 
         document.getElementById("orderAssignedMachineDisplay").textContent = currentOrder.assignedMachine || "-";
 
-        // Zobrazíme "machineDetail" => popisek, stavy, atd.
-        // Pokud chceme i tady, můžeme, anebo jen v detailu "savedMachineDisplay".
-        // Nahradíme "savedMachine" -> currentOrder.machineDetail
-
         const savedDiv = document.getElementById("savedMachineDisplay");
         let totalM = currentOrder.progress.machineCount || 0;
         if (currentOrder.assignedMachine) {
-          // Pokud je assignedMachine zadán, zobrazíme popisek z machineDetail
           const md = currentOrder.machineDetail || {};
           savedDiv.innerHTML = `<h3>Automat: ${currentOrder.assignedMachine}</h3>
             <p>Popis: ${md.description || ""}</p>
@@ -779,8 +771,6 @@
       }
     }
 
-    // Zrušíme globální savedMachine, budeme vše ukládat do currentOrder.machineDetail
-
     function machineRadioChanged(radio) {
       if (radio.checked) {
         document.getElementById("selectedMachineTitle").textContent = "Automat " + radio.value;
@@ -791,21 +781,18 @@
     function showMachineDetail() {
       if (!currentOrder) return;
 
-      // Předvybereme radio tlačítko podle assignedMachine
       const assigned = currentOrder.assignedMachine || "";
       const radios = document.querySelectorAll('input[name="machineRadio"]');
       radios.forEach(r => {
         r.checked = (r.value === assigned);
       });
 
-      // Naplníme polím to, co je v currentOrder.machineDetail
       document.getElementById("machineDescription").value = currentOrder.machineDetail.description || "";
       document.getElementById("togglePreparation").checked = currentOrder.machineDetail.preparation;
       document.getElementById("toggleAssemblyFirst").checked = currentOrder.machineDetail.assemblyFirst;
       document.getElementById("toggleAssemblySecond").checked = currentOrder.machineDetail.assemblySecond;
       document.getElementById("toggleMachineDone").checked = currentOrder.machineDetail.machineDone;
 
-      // A po "count" se sčítá do progress.machineCount, ale zobrazíme 0 v inputu.
       document.getElementById("machineCount").value = "";
 
       showView("machineDetailView");
@@ -822,33 +809,28 @@
         return;
       }
 
-      // Uložíme popisky do currentOrder.machineDetail
       currentOrder.machineDetail.description = document.getElementById("machineDescription").value;
       currentOrder.machineDetail.preparation = document.getElementById("togglePreparation").checked;
       currentOrder.machineDetail.assemblyFirst = document.getElementById("toggleAssemblyFirst").checked;
       currentOrder.machineDetail.assemblySecond = document.getElementById("toggleAssemblySecond").checked;
       currentOrder.machineDetail.machineDone = document.getElementById("toggleMachineDone").checked;
 
-      // Sečteme do machineCount
       const count = parseInt(document.getElementById("machineCount").value) || 0;
       const prevCount = currentOrder.progress.machineCount || 0;
       const newCount = prevCount + count;
       currentOrder.progress.machineCount = Math.min(newCount, currentOrder.quantity);
 
-      // Uložíme zvolený automat i do currentOrder.assignedMachine
       currentOrder.assignedMachine = selectedMachine;
 
       saveOrdersToLocalStorage();
 
       alert("Detaily automatu " + selectedMachine + " byly uloženy.");
 
-      // Po uložení vymažeme "machineCount" input
       document.getElementById("machineCount").value = "";
 
       backToOrderDetail();
     }
 
-    // AOI
     function showAoiControl() {
       showView("aoiControlView");
     }
@@ -879,7 +861,6 @@
       backToOrderDetail();
     }
 
-    // Ruční osazování
     function showManualAssembly() {
       showView("manualAssemblyView");
     }
@@ -906,7 +887,6 @@
       backToOrderDetail();
     }
 
-    // Ruční pájení
     function showHandSoldering() {
       showView("handSolderingView");
     }
@@ -933,7 +913,6 @@
       backToOrderDetail();
     }
 
-    // Selektivní pájení
     function showSelectiveSoldering() {
       showView("selectiveSolderingView");
     }
@@ -962,7 +941,6 @@
       backToOrderDetail();
     }
 
-    // Kontrola po pájení
     function showPostSolderingControl() {
       showView("postSolderingControlView");
     }
@@ -987,7 +965,6 @@
       backToOrderDetail();
     }
 
-    // Vlna
     function showWaveView() {
       showView("waveView");
     }
