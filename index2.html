@@ -11,6 +11,7 @@
       padding: 0;
       background-color: #f9f9f9;
     }
+
     header {
       position: fixed;
       top: 0;
@@ -22,12 +23,14 @@
       text-align: center;
       z-index: 1000;
     }
+
     .container {
       max-width: 600px;
-      margin: 80px auto 0;
+      margin: 80px auto 0 auto;
       padding: 10px;
       position: relative;
     }
+
     .view {
       display: none;
       padding: 20px;
@@ -45,6 +48,7 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
+
     .button {
       display: block;
       width: 100%;
@@ -57,6 +61,7 @@
       margin: 5px 0;
       font-size: 16px;
     }
+
     .back-button {
       display: inline-block;
       width: auto;
@@ -67,6 +72,7 @@
       color: white;
       cursor: pointer;
     }
+
     input[type="text"],
     input[type="password"],
     input[type="number"],
@@ -79,6 +85,7 @@
       box-sizing: border-box;
       font-size: 16px;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -106,11 +113,13 @@
       padding: 5px;
       font-size: 12px;
     }
+
     .radio-group label {
       display: inline-block;
       margin-right: 10px;
       font-size: 16px;
     }
+
     .status-complete {
       color: green;
       font-weight: bold;
@@ -123,6 +132,7 @@
       color: red;
       font-weight: bold;
     }
+
     .detail-actions {
       position: absolute;
       top: 20px;
@@ -135,12 +145,31 @@
       font-size: 14px;
       padding: 5px 10px;
     }
-  </style>
+    @media (max-width: 480px) {
+    /* For smaller screens, like iPhone */
+    body {
+      font-size: 14px;
+    }
+    .container {
+      margin: 60px auto 0 auto;
+      padding: 5px;
+      max-width: 95%;
+    }
+    .button {
+      font-size: 14px;
+      padding: 8px 10px;
+    }
+    h1, h2 {
+      font-size: 18px;
+    }
+  }
+</style>
 </head>
 <body>
   <header>
     <h1>Výroba</h1>
   </header>
+
   <div class="container">
     <!-- 1. Přihlášovací obrazovka -->
     <div id="loginView" class="view active">
@@ -150,6 +179,7 @@
       <button class="button" onclick="login()">Přihlásit se</button>
       <p id="loginError" style="color:red;"></p>
     </div>
+
     <!-- 2. Hlavní obrazovka: Seznam zakázek -->
     <div id="mainView" class="view">
       <h1>Seznam zakázek</h1>
@@ -167,13 +197,16 @@
       </table>
       <button class="button" onclick="logout()">Odhlásit se</button>
     </div>
+
     <!-- 3. Detail zakázky – View mode -->
     <div id="orderDetailView" class="view">
       <div class="detail-actions">
         <button class="button" onclick="editOrder()">Upravit</button>
         <button class="button" style="background-color:#FF4136;" onclick="deleteOrder()">Smazat</button>
       </div>
+
       <button class="back-button" onclick="showMainView()">← Zpět na seznam</button>
+
       <h2>Zakázka: <span id="orderNumberDisplay"></span></h2>
       <p>Firma: <span id="orderCustomerDisplay"></span></p>
       <p>Výrobek: <span id="orderProductDisplay"></span></p>
@@ -184,11 +217,15 @@
       <p>Vedoucí zakázky: <span id="orderManagerDisplay"></span></p>
       <p>Sklad: <span id="orderStockDisplay"></span></p>
       <p>Poznámky: <span id="orderNotesDisplay"></span></p>
+
       <p>Vybraný automat: <span id="orderAssignedMachineDisplay"></span></p>
+
       <!-- Zobrazení uloženého automatu -->
       <div id="savedMachineDisplay"></div>
+
       <!-- Souhrn postupu práce -->
       <div id="progressSummary"></div>
+
       <hr>
       <h3>Sekce</h3>
       <button class="button" onclick="showMachineDetail()">Automaty</button>
@@ -199,6 +236,7 @@
       <button class="button" onclick="showPostSolderingControl()">Kontrola po pájení</button>
       <button class="button" onclick="showWaveView()">Vlna</button>
     </div>
+
     <!-- 4. Detail zakázky – Editace -->
     <div id="orderEditView" class="view">
       <button class="button" onclick="cancelEdit()">← Zrušit úpravy</button>
@@ -210,6 +248,7 @@
       <p>Číslo objednávky: <input type="text" id="orderOrderNumberEdit"></p>
       <p>Datum objednávky: <input type="date" id="orderOrderDateEdit"></p>
       <p>Datum dodání: <input type="date" id="orderDeliveryDateEdit"></p>
+
       <p>Vedoucí zakázky:
         <select id="orderManagerEdit">
           <option value="">-- vyberte vedoucího --</option>
@@ -219,10 +258,12 @@
           <option value="Petr Novák">Petr Novák</option>
         </select>
       </p>
+
       <p>Sklad: <label><input type="checkbox" id="orderStockEdit"> Materiál připraven</label></p>
       <p>Poznámky: <textarea id="orderNotesEdit" placeholder="Poznámky k zakázce..."></textarea></p>
       <button class="button" onclick="saveOrder()">Uložit zakázku</button>
     </div>
+
     <!-- 5. Přidat zakázku -->
     <div id="orderAddView" class="view">
       <button class="button" onclick="showMainView()">← Zpět na seznam</button>
@@ -240,6 +281,7 @@
       <p>Číslo objednávky: <input type="text" id="addOrderID"></p>
       <p>Datum objednávky: <input type="date" id="addOrderDate"></p>
       <p>Datum dodání: <input type="date" id="addDeliveryDate"></p>
+
       <p>Vedoucí zakázky:
         <select id="addManager">
           <option value="">-- vyberte vedoucího --</option>
@@ -249,20 +291,20 @@
           <option value="Petr Novák">Petr Novák</option>
         </select>
       </p>
+
       <p>Přiřadit automat:
         <select id="addAssignedMachine">
           <option value="">-- Vyberte automat --</option>
           <option value="Alfa">Alfa</option>
           <option value="Beta">Beta</option>
-          <!-- Změna: Gama -> Gamma a přidání Eta -->
-          <option value="Gamma">Gamma</option>
+          <option value="Gama">Gama</option>
           <option value="Delta">Delta</option>
-          <option value="Eta">Eta</option>
         </select>
       </p>
       <p>Poznámky: <textarea id="addNotes" placeholder="Poznámky k zakázce..."></textarea></p>
       <button class="button" onclick="addOrder()">Přidat zakázku</button>
     </div>
+
     <!-- 6. Sekce Automaty – pomocí radio tlačítek -->
     <div id="machineDetailView" class="view">
       <button class="back-button" onclick="backToOrderDetail()">← Zpět na detail zakázky</button>
@@ -271,11 +313,8 @@
       <div class="radio-group" id="machineRadioGroup">
         <label><input type="radio" name="machineRadio" value="Alfa" onchange="machineRadioChanged(this)"> Alfa</label>
         <label><input type="radio" name="machineRadio" value="Beta" onchange="machineRadioChanged(this)"> Beta</label>
-        <!-- Změna: Gama -> Gamma -->
-        <label><input type="radio" name="machineRadio" value="Gamma" onchange="machineRadioChanged(this)"> Gamma</label>
+        <label><input type="radio" name="machineRadio" value="Gama" onchange="machineRadioChanged(this)"> Gama</label>
         <label><input type="radio" name="machineRadio" value="Delta" onchange="machineRadioChanged(this)"> Delta</label>
-        <!-- Nová volba Eta -->
-        <label><input type="radio" name="machineRadio" value="Eta" onchange="machineRadioChanged(this)"> Eta</label>
       </div>
       <div id="machineDetails" style="display:none; margin-top:10px; border: 1px solid #ccc; padding:10px;">
         <h4 id="selectedMachineTitle"></h4>
@@ -290,6 +329,7 @@
         <button class="button" onclick="saveMachineDetails()">Uložit automat</button>
       </div>
     </div>
+
     <!-- 7. Sekce AOI kontrola -->
     <div id="aoiControlView" class="view">
       <button class="back-button" onclick="backToOrderDetail()">← Zpět na detail zakázky</button>
@@ -306,6 +346,7 @@
       </p>
       <p>Počet kusů (přidat/aktualizovat): <input type="number" id="aoiQuantity"></p>
     </div>
+
     <!-- 8. Sekce Ruční osazování -->
     <div id="manualAssemblyView" class="view">
       <button class="back-button" onclick="backToOrderDetail()">← Zpět na detail zakázky</button>
@@ -317,7 +358,8 @@
         <label><input type="checkbox" id="toggleManualDone"> Hotovo</label>
       </div>
     </div>
-    <!-- 8.5. Sekce Ruční pájení -->
+
+    <!-- Nová 8.5. Sekce Ruční pájení -->
     <div id="handSolderingView" class="view">
       <button class="back-button" onclick="backToOrderDetail()">← Zpět na detail zakázky</button>
       <button class="button" onclick="saveHandSoldering()">Uložit Ruční pájení</button>
@@ -328,12 +370,13 @@
         <label><input type="checkbox" id="toggleHandSolderDone"> Hotovo</label>
       </div>
     </div>
+
     <!-- 9. Sekce Selektivní pájení -->
     <div id="selectiveSolderingView" class="view">
       <button class="back-button" onclick="backToOrderDetail()">← Zpět na detail zakázky</button>
       <button class="button" onclick="saveSelectiveSoldering()">Uložit Selektivní pájení</button>
       <h2>Selektivní pájení</h2>
-      <textarea id="solderingNotes" placeholder="Poznámky k výrobě..."></textarea>
+      <textarea id="solderingNotes" placeholder="Poznámky k výrobě..." ></textarea>
       <div>
         <label><input type="checkbox" id="toggleFirstSide"> První strana</label><br>
         <label><input type="checkbox" id="toggleSecondSide"> Druhá strana</label>
@@ -343,6 +386,7 @@
         <label><input type="checkbox" id="toggleSolderingDone"> Hotovo</label>
       </div>
     </div>
+
     <!-- 10. Sekce Kontrola po pájení -->
     <div id="postSolderingControlView" class="view">
       <button class="back-button" onclick="backToOrderDetail()">← Zpět na detail zakázky</button>
@@ -350,26 +394,26 @@
       <h2>Kontrola po pájení</h2>
       <p>Počet zkontrolovaných desek (přidat/aktualizovat):</p>
       <input type="number" id="postInspectedCount" placeholder="Počet zkontrolovaných desek">
-      <textarea id="postNotes" placeholder="Poznámky k výrobě..."></textarea>
+      <textarea id="postNotes" placeholder="Poznámky k výrobě..." ></textarea>
     </div>
+
     <!-- 11. Sekce Vlna -->
     <div id="waveView" class="view">
       <button class="back-button" onclick="backToOrderDetail()">← Zpět na detail zakázky</button>
       <button class="button" onclick="saveWave()">Uložit Vlna</button>
       <h2>Vlna</h2>
-      <textarea id="waveNotes" placeholder="Poznámky k výrobě..."></textarea>
+      <textarea id="waveNotes" placeholder="Poznámky k výrobě..." ></textarea>
       <p>Počet kusů (přidat/aktualizovat): <input type="number" id="waveQuantity"></p>
       <div>
         <label><input type="checkbox" id="toggleWaveDone"> Hotovo</label>
       </div>
     </div>
   </div>
-  <script>
-    "use strict";
 
-    // ----------------------------
-    // Globální proměnné a inicializace
-    // ----------------------------
+  <script>
+    // Vytvoříme v "currentOrder" strukturu, kde se bude ukládat popisek k automatu, abychom ho zachovali.
+    // Zrušíme proměnnou "savedMachine" a místo toho vše ukládáme do currentOrder.machineDetail.
+
     let orders = [
       {
         id: 1,
@@ -434,80 +478,90 @@
         }
       }
     ];
-    
-    // Ukládání a načítání zakázek z LocalStorage
+
     function saveOrdersToLocalStorage() {
       localStorage.setItem("orders", JSON.stringify(orders));
     }
-    
+
     function loadOrdersFromLocalStorage() {
       const saved = localStorage.getItem("orders");
       if (saved) {
         orders = JSON.parse(saved);
       }
     }
-    
+
     let currentOrder = null;
+
     loadOrdersFromLocalStorage();
-    
-    // ----------------------------
-    // Přihlášení / Odhlášení
-    // ----------------------------
+
     function login() {
-      const username = document.getElementById("loginUsername").value.trim();
+      const username = document.getElementById("loginUsername").value;
       const password = document.getElementById("loginPassword").value;
       if (username === "admin" && password === "heslo") {
-        // Vyčistíme případnou předchozí chybovou zprávu
-        document.getElementById("loginError").textContent = "";
         showMainView();
       } else {
         document.getElementById("loginError").textContent = "Nesprávné přihlašovací údaje.";
       }
     }
-    
+
     function logout() {
       showView("loginView");
     }
-    
-    // ----------------------------
-    // Funkce pro přepínání zobrazení
-    // ----------------------------
+
     function showView(viewId) {
-      const views = document.querySelectorAll(".view");
-      views.forEach(v => v.classList.remove("active"));
+      const views = document.getElementsByClassName("view");
+      for (let i = 0; i < views.length; i++) {
+        views[i].classList.remove("active");
+      }
       document.getElementById(viewId).classList.add("active");
-    
+
       if (viewId === "orderDetailView") {
         updateProgressSummary();
       }
     }
-    
+
     function showMainView() {
       populateOrderList();
       showView("mainView");
     }
-    
-    // ----------------------------
-    // Práce se zakázkami
-    // ----------------------------
+
     function populateOrderList() {
       const tbody = document.getElementById("orderList");
       tbody.innerHTML = "";
       orders.sort((a, b) => a.orderNumber - b.orderNumber);
+
       orders.forEach(order => {
         const tr = document.createElement("tr");
         tr.onclick = () => showOrderDetail(order.id);
-    
-        tr.innerHTML = `
-          <td>${order.orderNumber.toLocaleString('cs-CZ')}</td>
-          <td>${order.customer}</td>
-          <td>${order.product}</td>
-          <td><button class="deleteBtn" onclick="event.stopPropagation(); deleteOrderById(${order.id});">Smazat</button></td>
-        `;
+
+        const tdOrder = document.createElement("td");
+        tdOrder.textContent = order.orderNumber.toLocaleString('cs-CZ');
+
+        const tdCustomer = document.createElement("td");
+        tdCustomer.textContent = order.customer;
+
+        const tdProduct = document.createElement("td");
+        tdProduct.textContent = order.product;
+
+        tr.appendChild(tdOrder);
+        tr.appendChild(tdCustomer);
+        tr.appendChild(tdProduct);
+
+        const tdDelete = document.createElement("td");
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "Smazat";
+        delBtn.className = "deleteBtn";
+        delBtn.onclick = function(e) {
+          e.stopPropagation();
+          deleteOrderById(order.id);
+        };
+        tdDelete.appendChild(delBtn);
+        tr.appendChild(tdDelete);
+
         tbody.appendChild(tr);
       });
     }
-    
+
     function showOrderDetail(orderId) {
       currentOrder = orders.find(o => o.id === orderId);
       if (currentOrder) {
@@ -519,47 +573,79 @@
         document.getElementById("orderOrderDateDisplay").textContent = currentOrder.orderDate;
         document.getElementById("orderDeliveryDateDisplay").textContent = currentOrder.deliveryDate;
         document.getElementById("orderManagerDisplay").textContent = currentOrder.manager;
-        document.getElementById("orderStockDisplay").textContent = currentOrder.stockReady ? "Materiál připraven" : "Materiál není připraven";
+        document.getElementById("orderStockDisplay").textContent =
+          currentOrder.stockReady ? "Materiál připraven" : "Materiál není připraven";
         document.getElementById("orderNotesDisplay").textContent = currentOrder.notes;
+
         document.getElementById("orderAssignedMachineDisplay").textContent = currentOrder.assignedMachine || "-";
-    
-        // Zobrazení detailu automatu, pokud je přiřazen
+
+        // Zobrazíme "machineDetail" => popisek, stavy, atd.
+        // Pokud chceme i tady, můžeme, anebo jen v detailu "savedMachineDisplay".
+        // Nahradíme "savedMachine" -> currentOrder.machineDetail
+
         const savedDiv = document.getElementById("savedMachineDisplay");
-        const totalM = currentOrder.progress.machineCount || 0;
+        let totalM = currentOrder.progress.machineCount || 0;
         if (currentOrder.assignedMachine) {
+          // Pokud je assignedMachine zadán, zobrazíme popisek z machineDetail
           const md = currentOrder.machineDetail || {};
-          savedDiv.innerHTML = `
-            <h3>Automat: ${currentOrder.assignedMachine}</h3>
+          savedDiv.innerHTML = `<h3>Automat: ${currentOrder.assignedMachine}</h3>
             <p>Popis: ${md.description || ""}</p>
             <p>Příprava: ${md.preparation ? "Hotovo" : "Nezahájeno"}</p>
             <p>Osazení první strana: ${md.assemblyFirst ? "Hotovo" : "Nezahájeno"}</p>
             <p>Osazení druhá strana: ${md.assemblySecond ? "Hotovo" : "Nezahájeno"}</p>
             <p>Hotovo: ${md.machineDone ? "Hotovo" : "Nezahájeno"}</p>
-            <p>Počet osazených desek (celkem): ${totalM}</p>
-          `;
+            <p>Počet osazených desek (celkem): ${totalM}</p>`;
         } else {
           savedDiv.innerHTML = "";
         }
+
         showView("orderDetailView");
       }
     }
-    
-    function deleteOrder() {
-      if (currentOrder && confirm("Opravdu chcete smazat tuto zakázku?")) {
-        deleteOrderById(currentOrder.id);
+
+    function maybeShowFraction(count, total) {
+      if (count === 0) {
+        return "";
+      } else {
+        return ` (${count}/${total})`;
       }
     }
-    
-    function deleteOrderById(orderId) {
-      const index = orders.findIndex(o => o.id === orderId);
-      if (index !== -1) {
-        orders.splice(index, 1);
-        saveOrdersToLocalStorage();
-        alert("Zakázka byla smazána.");
-        showMainView();
+
+    function getStatusLabel(count, total) {
+      if (count >= total && total > 0) {
+        return { text: "Hotovo", className: "status-complete"};
+      } else if (count > 0) {
+        return { text: "Částečně", className: "status-partial"};
+      } else {
+        return { text: "Nezahájeno", className: "status-notstarted"};
       }
     }
-    
+
+    function updateProgressSummary() {
+      if (!currentOrder) return;
+      const p = currentOrder.progress;
+      const total = currentOrder.quantity;
+
+      const machineStatus = getStatusLabel(p.machineCount, total);
+      const aoiStatus = getStatusLabel(p.aoiCount, total);
+      const manualStatus = getStatusLabel(p.manualCount, total);
+      const handSolderStatus = getStatusLabel(p.handSolderCount, total);
+      const solderStatus = getStatusLabel(p.solderingCount, total);
+      const postStatus = getStatusLabel(p.postCount, total);
+      const waveStatus = getStatusLabel(p.waveCount, total);
+
+      let summaryHTML = "<h3>Postup práce:</h3><ul>";
+      summaryHTML += `<li>Automat: <span class="${machineStatus.className}">${machineStatus.text}${maybeShowFraction(p.machineCount, total)}</span></li>`;
+      summaryHTML += `<li>AOI kontrola: <span class="${aoiStatus.className}">${aoiStatus.text}${maybeShowFraction(p.aoiCount, total)}</span></li>`;
+      summaryHTML += `<li>Ruční osazování: <span class="${manualStatus.className}">${manualStatus.text}${maybeShowFraction(p.manualCount, total)}</span></li>`;
+      summaryHTML += `<li>Ruční pájení: <span class="${handSolderStatus.className}">${handSolderStatus.text}${maybeShowFraction(p.handSolderCount, total)}</span></li>`;
+      summaryHTML += `<li>Selektivní pájení: <span class="${solderStatus.className}">${solderStatus.text}${maybeShowFraction(p.solderingCount, total)}</span></li>`;
+      summaryHTML += `<li>Kontrola po pájení: <span class="${postStatus.className}">${postStatus.text}${maybeShowFraction(p.postCount, total)}</span></li>`;
+      summaryHTML += `<li>Vlna: <span class="${waveStatus.className}">${waveStatus.text}${maybeShowFraction(p.waveCount, total)}</span></li>`;
+      summaryHTML += "</ul>";
+      document.getElementById("progressSummary").innerHTML = summaryHTML;
+    }
+
     function editOrder() {
       if (currentOrder) {
         document.getElementById("orderNumberEditDisplay").textContent = currentOrder.orderNumber.toLocaleString('cs-CZ');
@@ -569,37 +655,55 @@
         document.getElementById("orderOrderNumberEdit").value = currentOrder.orderID;
         document.getElementById("orderOrderDateEdit").value = currentOrder.orderDate;
         document.getElementById("orderDeliveryDateEdit").value = currentOrder.deliveryDate;
-        document.getElementById("orderManagerEdit").value = currentOrder.manager || "";
+
+        const managerSelect = document.getElementById("orderManagerEdit");
+        managerSelect.value = currentOrder.manager || "";
+
         document.getElementById("orderStockEdit").checked = currentOrder.stockReady;
         document.getElementById("orderNotesEdit").value = currentOrder.notes;
         showView("orderEditView");
       }
     }
-    
+
     function saveOrder() {
       if (currentOrder) {
-        currentOrder.customer = document.getElementById("orderCustomerEdit").value.trim();
-        currentOrder.product = document.getElementById("orderProductEdit").value.trim();
-        currentOrder.quantity = parseInt(document.getElementById("orderQuantityEdit").value, 10) || 0;
-        currentOrder.orderID = document.getElementById("orderOrderNumberEdit").value.trim();
+        currentOrder.customer = document.getElementById("orderCustomerEdit").value;
+        currentOrder.product = document.getElementById("orderProductEdit").value;
+        currentOrder.quantity = parseInt(document.getElementById("orderQuantityEdit").value) || 0;
+        currentOrder.orderID = document.getElementById("orderOrderNumberEdit").value;
         currentOrder.orderDate = document.getElementById("orderOrderDateEdit").value;
         currentOrder.deliveryDate = document.getElementById("orderDeliveryDateEdit").value;
         currentOrder.manager = document.getElementById("orderManagerEdit").value;
         currentOrder.stockReady = document.getElementById("orderStockEdit").checked;
-        currentOrder.notes = document.getElementById("orderNotesEdit").value.trim();
-    
+        currentOrder.notes = document.getElementById("orderNotesEdit").value;
+
         saveOrdersToLocalStorage();
         alert("Zakázka byla uložena!");
         showOrderDetail(currentOrder.id);
       }
     }
-    
+
     function cancelEdit() {
       showOrderDetail(currentOrder.id);
     }
-    
+
+    function deleteOrder() {
+      if (currentOrder && confirm("Opravdu chcete smazat tuto zakázku?")) {
+        deleteOrderById(currentOrder.id);
+      }
+    }
+
+    function deleteOrderById(orderId) {
+      const index = orders.findIndex(o => o.id === orderId);
+      if (index !== -1) {
+        orders.splice(index, 1);
+        saveOrdersToLocalStorage();
+        alert("Zakázka byla smazána.");
+        showMainView();
+      }
+    }
+
     function showAddOrderView() {
-      // Vyčistíme hodnoty ve formuláři
       document.getElementById("addCustomer").value = "";
       document.getElementById("addProduct").value = "";
       document.getElementById("addQuantity").value = "";
@@ -611,24 +715,25 @@
       document.getElementById("addManager").value = "";
       document.getElementById("addAssignedMachine").value = "";
       document.getElementById("addNotes").value = "";
-    
+
       showView("orderAddView");
     }
-    
+
     function addOrder() {
-      const customer = document.getElementById("addCustomer").value.trim();
-      const product = document.getElementById("addProduct").value.trim();
-      const quantity = parseInt(document.getElementById("addQuantity").value, 10) || 0;
+      const customer = document.getElementById("addCustomer").value;
+      const product = document.getElementById("addProduct").value;
+      const quantity = parseInt(document.getElementById("addQuantity").value) || 0;
       const technology = document.getElementById("addTechnology").value;
-      const orderNumber = parseInt(document.getElementById("addOrderNumber").value, 10) || 0;
-      const orderID = document.getElementById("addOrderID").value.trim();
+      const orderNumber = parseInt(document.getElementById("addOrderNumber").value) || 0;
+      const orderID = document.getElementById("addOrderID").value;
       const orderDate = document.getElementById("addOrderDate").value;
       const deliveryDate = document.getElementById("addDeliveryDate").value;
       const manager = document.getElementById("addManager").value;
       const assignedMachine = document.getElementById("addAssignedMachine").value;
-      const notes = document.getElementById("addNotes").value.trim();
-    
+      const notes = document.getElementById("addNotes").value;
+
       const newId = orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1;
+
       const newOrder = {
         id: newId,
         orderNumber: orderNumber,
@@ -660,304 +765,261 @@
           waveCount: 0
         }
       };
-    
+
       orders.push(newOrder);
       saveOrdersToLocalStorage();
+
       alert("Zakázka byla přidána.");
       showMainView();
     }
-    
+
     function backToOrderDetail() {
       if (currentOrder) {
         showOrderDetail(currentOrder.id);
       }
     }
-    
-    // ----------------------------
-    // Sekce Automaty
-    // ----------------------------
+
+    // Zrušíme globální savedMachine, budeme vše ukládat do currentOrder.machineDetail
+
     function machineRadioChanged(radio) {
       if (radio.checked) {
         document.getElementById("selectedMachineTitle").textContent = "Automat " + radio.value;
         document.getElementById("machineDetails").style.display = "block";
       }
     }
-    
+
     function showMachineDetail() {
       if (!currentOrder) return;
-      // Předvybereme radio tlačítko podle přiřazeného automatu
+
+      // Předvybereme radio tlačítko podle assignedMachine
       const assigned = currentOrder.assignedMachine || "";
-      const radios = document.getElementsByName("machineRadio");
-      for (const r of radios) {
+      const radios = document.querySelectorAll('input[name="machineRadio"]');
+      radios.forEach(r => {
         r.checked = (r.value === assigned);
-      }
-      // Naplníme pole podle uložených dat
+      });
+
+      // Naplníme polím to, co je v currentOrder.machineDetail
       document.getElementById("machineDescription").value = currentOrder.machineDetail.description || "";
       document.getElementById("togglePreparation").checked = currentOrder.machineDetail.preparation;
       document.getElementById("toggleAssemblyFirst").checked = currentOrder.machineDetail.assemblyFirst;
       document.getElementById("toggleAssemblySecond").checked = currentOrder.machineDetail.assemblySecond;
       document.getElementById("toggleMachineDone").checked = currentOrder.machineDetail.machineDone;
+
+      // A po "count" se sčítá do progress.machineCount, ale zobrazíme 0 v inputu.
       document.getElementById("machineCount").value = "";
+
       showView("machineDetailView");
     }
-    
+
     function saveMachineDetails() {
       if (!currentOrder) return;
+
       const radios = document.getElementsByName("machineRadio");
       let selectedMachine = "";
-      for (const r of radios) {
-        if (r.checked) {
-          selectedMachine = r.value;
-          break;
-        }
-      }
+      radios.forEach(r => { if (r.checked) { selectedMachine = r.value; } });
       if (!selectedMachine) {
         alert("Prosím, vyberte automat.");
         return;
       }
-      // Uložení detailů automatu do currentOrder
-      currentOrder.machineDetail.description = document.getElementById("machineDescription").value.trim();
+
+      // Uložíme popisky do currentOrder.machineDetail
+      currentOrder.machineDetail.description = document.getElementById("machineDescription").value;
       currentOrder.machineDetail.preparation = document.getElementById("togglePreparation").checked;
       currentOrder.machineDetail.assemblyFirst = document.getElementById("toggleAssemblyFirst").checked;
       currentOrder.machineDetail.assemblySecond = document.getElementById("toggleAssemblySecond").checked;
       currentOrder.machineDetail.machineDone = document.getElementById("toggleMachineDone").checked;
-    
-      // Aktualizace počtu osazených desek
-      const count = parseInt(document.getElementById("machineCount").value, 10) || 0;
+
+      // Sečteme do machineCount
+      const count = parseInt(document.getElementById("machineCount").value) || 0;
       const prevCount = currentOrder.progress.machineCount || 0;
-      currentOrder.progress.machineCount = Math.min(prevCount + count, currentOrder.quantity);
-    
-      // Uložení vybraného automatu
+      const newCount = prevCount + count;
+      currentOrder.progress.machineCount = Math.min(newCount, currentOrder.quantity);
+
+      // Uložíme zvolený automat i do currentOrder.assignedMachine
       currentOrder.assignedMachine = selectedMachine;
+
       saveOrdersToLocalStorage();
-      alert(`Detaily automatu ${selectedMachine} byly uloženy.`);
+
+      alert("Detaily automatu " + selectedMachine + " byly uloženy.");
+
+      // Po uložení vymažeme "machineCount" input
       document.getElementById("machineCount").value = "";
+
       backToOrderDetail();
     }
-    
-    // ----------------------------
-    // Sekce AOI kontrola
-    // ----------------------------
+
+    // AOI
     function showAoiControl() {
       showView("aoiControlView");
     }
-    
+
     function saveAoiControl() {
       if (!currentOrder) return;
-      const added = parseInt(document.getElementById("aoiQuantity").value, 10) || 0;
+      const added = parseInt(document.getElementById("aoiQuantity").value) || 0;
       const aoiDone = document.getElementById("toggleAoiDone").checked;
       const aoiFirst = document.getElementById("toggleAoiFirst").checked;
       const aoiSecond = document.getElementById("toggleAoiSecond").checked;
-    
+
       const prev = currentOrder.progress.aoiCount || 0;
-      currentOrder.progress.aoiCount = Math.min(prev + added, currentOrder.quantity);
+      const newCount = prev + added;
+      currentOrder.progress.aoiCount = Math.min(newCount, currentOrder.quantity);
       saveOrdersToLocalStorage();
-    
+
       if (aoiDone && aoiFirst && aoiSecond && added > 0) {
-        alert(`AOI kontrola proběhla, přidáno ${added} ks.`);
+        alert("AOI kontrola proběhla, přidáno " + added + " ks.");
       } else {
         alert("AOI kontrola uložena, ale podmínky k hotovo nesplněny.");
       }
-    
+
       document.getElementById("aoiQuantity").value = "";
       document.getElementById("toggleAoiDone").checked = false;
       document.getElementById("toggleAoiFirst").checked = false;
       document.getElementById("toggleAoiSecond").checked = false;
+
       backToOrderDetail();
     }
-    
-    // ----------------------------
-    // Sekce Ruční osazování
-    // ----------------------------
+
+    // Ruční osazování
     function showManualAssembly() {
       showView("manualAssemblyView");
     }
-    
+
     function saveManualAssembly() {
       if (!currentOrder) return;
-      const added = parseInt(document.getElementById("manualCount").value, 10) || 0;
+      const added = parseInt(document.getElementById("manualCount").value) || 0;
       const manualDone = document.getElementById("toggleManualDone").checked;
-    
+
       const prev = currentOrder.progress.manualCount || 0;
       currentOrder.progress.manualCount = Math.min(prev + added, currentOrder.quantity);
       saveOrdersToLocalStorage();
-    
+
       if (manualDone && added > 0) {
-        alert(`Ruční osazování uloženo, přidáno ${added} ks.`);
+        alert("Ruční osazování uloženo, přidáno " + added + " ks.");
       } else {
         alert("Ruční osazování uloženo.");
       }
-    
+
       document.getElementById("manualCount").value = "";
       document.getElementById("manualNotes").value = "";
       document.getElementById("toggleManualDone").checked = false;
+
       backToOrderDetail();
     }
-    
-    // ----------------------------
-    // Sekce Ruční pájení
-    // ----------------------------
+
+    // Ruční pájení
     function showHandSoldering() {
       showView("handSolderingView");
     }
-    
+
     function saveHandSoldering() {
       if (!currentOrder) return;
-      const added = parseInt(document.getElementById("handSolderCount").value, 10) || 0;
+      const added = parseInt(document.getElementById("handSolderCount").value) || 0;
       const done = document.getElementById("toggleHandSolderDone").checked;
-    
+
       const prev = currentOrder.progress.handSolderCount || 0;
       currentOrder.progress.handSolderCount = Math.min(prev + added, currentOrder.quantity);
       saveOrdersToLocalStorage();
-    
+
       if (done && added > 0) {
-        alert(`Ruční pájení uloženo, přidáno ${added} ks.`);
+        alert("Ruční pájení uloženo, přidáno " + added + " ks.");
       } else {
         alert("Ruční pájení uloženo.");
       }
-    
+
       document.getElementById("handSolderCount").value = "";
       document.getElementById("handSolderNotes").value = "";
       document.getElementById("toggleHandSolderDone").checked = false;
+
       backToOrderDetail();
     }
-    
-    // ----------------------------
-    // Sekce Selektivní pájení
-    // ----------------------------
+
+    // Selektivní pájení
     function showSelectiveSoldering() {
       showView("selectiveSolderingView");
     }
-    
+
     function saveSelectiveSoldering() {
       if (!currentOrder) return;
-      const added = parseInt(document.getElementById("solderingQuantity").value, 10) || 0;
+      const added = parseInt(document.getElementById("solderingQuantity").value) || 0;
       const done = document.getElementById("toggleSolderingDone").checked;
-    
+
       const prev = currentOrder.progress.solderingCount || 0;
       currentOrder.progress.solderingCount = Math.min(prev + added, currentOrder.quantity);
       saveOrdersToLocalStorage();
-    
+
       if (done && added > 0) {
-        alert(`Selektivní pájení uloženo, přidáno ${added} ks.`);
+        alert("Selektivní pájení uloženo, přidáno " + added + " ks.");
       } else {
         alert("Selektivní pájení uloženo.");
       }
-    
+
       document.getElementById("solderingQuantity").value = "";
       document.getElementById("solderingNotes").value = "";
       document.getElementById("toggleSolderingDone").checked = false;
       document.getElementById("toggleFirstSide").checked = false;
       document.getElementById("toggleSecondSide").checked = false;
+
       backToOrderDetail();
     }
-    
-    // ----------------------------
-    // Sekce Kontrola po pájení
-    // ----------------------------
+
+    // Kontrola po pájení
     function showPostSolderingControl() {
       showView("postSolderingControlView");
     }
-    
+
     function savePostSolderingControl() {
       if (!currentOrder) return;
-      const added = parseInt(document.getElementById("postInspectedCount").value, 10) || 0;
-    
+      const added = parseInt(document.getElementById("postInspectedCount").value) || 0;
+
       const prev = currentOrder.progress.postCount || 0;
       currentOrder.progress.postCount = Math.min(prev + added, currentOrder.quantity);
       saveOrdersToLocalStorage();
-    
+
       if (added > 0) {
-        alert(`Kontrola po pájení uložena, přidáno ${added} ks.`);
+        alert("Kontrola po pájení uložena, přidáno " + added + " ks.");
       } else {
         alert("Kontrola po pájení uložena.");
       }
-    
+
       document.getElementById("postInspectedCount").value = "";
       document.getElementById("postNotes").value = "";
+
       backToOrderDetail();
     }
-    
-    // ----------------------------
-    // Sekce Vlna
-    // ----------------------------
+
+    // Vlna
     function showWaveView() {
       showView("waveView");
     }
-    
+
     function saveWave() {
       if (!currentOrder) return;
-      const added = parseInt(document.getElementById("waveQuantity").value, 10) || 0;
+      const added = parseInt(document.getElementById("waveQuantity").value) || 0;
       const waveDone = document.getElementById("toggleWaveDone").checked;
-    
+
       const prev = currentOrder.progress.waveCount || 0;
       currentOrder.progress.waveCount = Math.min(prev + added, currentOrder.quantity);
       saveOrdersToLocalStorage();
-    
+
       if (waveDone && added > 0) {
-        alert(`Vlna uložena, přidáno ${added} ks.`);
+        alert("Vlna uložena, přidáno " + added + " ks.");
       } else {
         alert("Vlna uložena.");
       }
-    
+
       document.getElementById("waveQuantity").value = "";
       document.getElementById("waveNotes").value = "";
       document.getElementById("toggleWaveDone").checked = false;
+
       backToOrderDetail();
     }
-    
-    // ----------------------------
-    // Souhrn postupu práce
-    // ----------------------------
-    function maybeShowFraction(count, total) {
-      return count === 0 ? "" : ` (${count}/${total})`;
-    }
-    
-    function getStatusLabel(count, total) {
-      if (count >= total && total > 0) {
-        return { text: "Hotovo", className: "status-complete" };
-      } else if (count > 0) {
-        return { text: "Částečně", className: "status-partial" };
-      } else {
-        return { text: "Nezahájeno", className: "status-notstarted" };
-      }
-    }
-    
-    function updateProgressSummary() {
-      if (!currentOrder) return;
-      const p = currentOrder.progress;
-      const total = currentOrder.quantity;
-    
-      const machineStatus = getStatusLabel(p.machineCount, total);
-      const aoiStatus = getStatusLabel(p.aoiCount, total);
-      const manualStatus = getStatusLabel(p.manualCount, total);
-      const handSolderStatus = getStatusLabel(p.handSolderCount, total);
-      const solderStatus = getStatusLabel(p.solderingCount, total);
-      const postStatus = getStatusLabel(p.postCount, total);
-      const waveStatus = getStatusLabel(p.waveCount, total);
-    
-      const summaryHTML = `
-        <h3>Postup práce:</h3>
-        <ul>
-          <li>Automat: <span class="${machineStatus.className}">${machineStatus.text}${maybeShowFraction(p.machineCount, total)}</span></li>
-          <li>AOI kontrola: <span class="${aoiStatus.className}">${aoiStatus.text}${maybeShowFraction(p.aoiCount, total)}</span></li>
-          <li>Ruční osazování: <span class="${manualStatus.className}">${manualStatus.text}${maybeShowFraction(p.manualCount, total)}</span></li>
-          <li>Ruční pájení: <span class="${handSolderStatus.className}">${handSolderStatus.text}${maybeShowFraction(p.handSolderCount, total)}</span></li>
-          <li>Selektivní pájení: <span class="${solderStatus.className}">${solderStatus.text}${maybeShowFraction(p.solderingCount, total)}</span></li>
-          <li>Kontrola po pájení: <span class="${postStatus.className}">${postStatus.text}${maybeShowFraction(p.postCount, total)}</span></li>
-          <li>Vlna: <span class="${waveStatus.className}">${waveStatus.text}${maybeShowFraction(p.waveCount, total)}</span></li>
-        </ul>
-      `;
-      document.getElementById("progressSummary").innerHTML = summaryHTML;
-    }
-    
-    // ----------------------------
-    // Jednoduché testy (pro vývoj)
-    // ----------------------------
+
+    console.log("\n---TEST CASES---\n");
     (function runTests() {
       console.assert(typeof showMachineDetail === "function", "showMachineDetail should be defined.");
       console.log("No error on load => OK");
     })();
+
   </script>
 </body>
 </html>
