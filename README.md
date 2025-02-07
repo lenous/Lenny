@@ -1,1 +1,0 @@
-aplikace pro výrobu
