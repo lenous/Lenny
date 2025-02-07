@@ -184,7 +184,7 @@
         <button class="button" id="editOrderBtn">Upravit</button>
         <button class="button" id="deleteOrderBtn" style="background-color: var(--danger-color);">Smazat</button>
       </div>
-      <!-- Tlačítko "Zpět na seznam" s atributem data-target -->
+      <!-- Tlačítko "Zpět na seznam" s data-target -->
       <button class="back-button" data-target="mainView" id="backToListBtn">← Zpět na seznam</button>
       <h2>Zakázka: <span id="orderNumberDisplay"></span></h2>
       <p>Firma: <span id="orderCustomerDisplay"></span></p>
@@ -212,7 +212,7 @@
 
     <!-- 4. Editace zakázky -->
     <section id="orderEditView" class="view">
-      <!-- Tlačítko "Zpět" směřuje do detailu zakázky -->
+      <!-- Tlačítko "Zpět" s data-target -->
       <button class="back-button" data-target="orderDetailView" id="cancelEditBtn">← Zrušit úpravy</button>
       <h2>Upravit zakázku</h2>
       <p>Zakázka: <span id="orderNumberEditDisplay"></span></p>
@@ -244,7 +244,7 @@
 
     <!-- 5. Přidání zakázky -->
     <section id="orderAddView" class="view">
-      <!-- Tlačítko "Zpět" směřuje do seznamu -->
+      <!-- Tlačítko "Zpět" s data-target -->
       <button class="back-button" data-target="mainView" id="backToListFromAddBtn">← Zpět na seznam</button>
       <h2>Přidat zakázku</h2>
       <label for="addCustomer">Firma</label>
@@ -395,18 +395,16 @@
   </main>
 
   <script>
-    // Toast notifikace – zobrazí zprávu na několik sekund
+    // Funkce pro toast notifikace
     function showToast(message) {
       const toast = document.getElementById('toast');
       toast.textContent = message;
       toast.classList.add("show");
-      setTimeout(() => {
-        toast.classList.remove("show");
-      }, 3000);
+      setTimeout(() => { toast.classList.remove("show"); }, 3000);
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
-      // Jednotný event listener pro tlačítka "Zpět" (na základě data-target)
+    document.addEventListener("DOMContentLoaded", () => {
+      // Jednotný event listener pro všechna tlačítka "Zpět" na základě data-target
       document.querySelectorAll('.back-button').forEach(button => {
         button.addEventListener('click', function() {
           const target = this.dataset.target;
@@ -462,7 +460,7 @@
         }
       ];
 
-      // Zajistíme, aby každá zakázka měla potřebné vlastnosti
+      // Zajištění potřebných vlastností u zakázek
       function ensureOrderProperties(order) {
         if (!order.aoiControl) order.aoiControl = { done: false, first: false, second: false, quantity: 0 };
         if (!order.manualAssembly) order.manualAssembly = { done: false, count: 0, notes: "" };
@@ -526,7 +524,7 @@
           deleteOrderById(orderId);
         } else {
           let tr = e.target;
-          while (tr && tr.tagName !== 'TR') { tr = tr.parentElement; }
+          while (tr && tr.tagName !== 'TR') tr = tr.parentElement;
           if (tr && tr.dataset.id) { showOrderDetail(parseInt(tr.dataset.id)); }
         }
       });
